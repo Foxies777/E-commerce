@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "antd": "^5.17.4",
+    "bootstrap": "^5.3.3",
     "effector": "^23.2.2",
     "effector-react": "^23.2.1",
     "effector-storage": "^7.1.0",
@@ -19,7 +20,8 @@
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.23.1"
+    "react-router-dom": "^6.23.1",
+    "sass": "^1.77.4"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",

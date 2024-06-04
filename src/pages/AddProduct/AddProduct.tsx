@@ -1,5 +1,6 @@
 import React from 'react';
 import { Form, Input, Button, notification } from 'antd';
+import Navigation from '../../components/Navigation';
 
 export type Response = {
     id: number;
@@ -12,27 +13,21 @@ const AddProduct = () => {
   const [form] = Form.useForm();
 
   const onFinish = (values: Response) => {
-    // Получаем существующие продукты из localStorage
     const existingProducts = JSON.parse(localStorage.getItem('products') || '[]');
 
-    // Добавляем новый продукт к массиву существующих продуктов
     const updatedProducts = [...existingProducts, values];
-
-    // Сохраняем обновленный массив в localStorage
     localStorage.setItem('products', JSON.stringify(updatedProducts));
 
-    // Открываем уведомление об успешном сохранении
     notification.success({
       message: 'Product Added',
       description: 'The product has been added successfully!',
     });
-
-    // Сбрасываем форму
     form.resetFields();
   };
 
   return (
     <div style={{ maxWidth: 600, margin: '0 auto', padding: '2rem' }}>
+      <Navigation/>
       <Form
         form={form}
         layout="vertical"

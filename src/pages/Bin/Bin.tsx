@@ -1,8 +1,12 @@
 import React from 'react'
+import Navigation from '../../components/Navigation'
 
 const Bin = () => {
   return (
-    <div>Bin</div>
+    <div>
+      <Navigation/>
+      bin
+    </div>
   )
 }
 
