@@ -1,0 +1,24 @@
+.content-wrapper {
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 300px);
+    gap: 20px;
+}
+
+.product-wrapper {
+    width: 18rem;
+    height: 384px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    cursor: pointer;
+    border: 2px dashed #222;
+    transition: .3s;
+    &:hover{
+        background-color: #dbdbdb;
+    }
+}

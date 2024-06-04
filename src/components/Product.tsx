@@ -1,16 +1,34 @@
 import { Button, Card } from 'react-bootstrap'
 
-const Product = () => {
+interface ProductProps {
+  id: number,
+  img: string,
+  title: string,
+  description: string,
+  price: number,
+}
+
+const Product = ({
+  id,
+  img,
+  title,
+  description,
+  price,
+}: ProductProps
+
+) => {
   return (
-    <Card style={{ width: '18rem' }}>
-      <Card.Img variant="top" src="holder.js/100px180" />
+    <Card key={id} style={{ width: '18rem' }}>
+      <div style={{height: '200px', overflow: 'hidden'}}>
+        <Card.Img variant="top" src={img} />
+      </div>
       <Card.Body>
-        <Card.Title>Card Title</Card.Title>
+        <Card.Title>{title}</Card.Title>
         <Card.Text>
-          Some quick example text to build on the card title and make up the
-          bulk of the card's content.
+          {description} <br />
+          <strong>{price}</strong>
         </Card.Text>
-        <Button variant="primary">Go somewhere</Button>
+        <Button variant="primary">В корзину</Button>
       </Card.Body>
     </Card>
   )

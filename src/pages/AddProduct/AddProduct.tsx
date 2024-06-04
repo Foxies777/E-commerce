@@ -1,73 +1,82 @@
-import React from 'react';
 import { Form, Input, Button, notification } from 'antd';
 import Navigation from '../../components/Navigation';
 
 export type Response = {
-    id: number;
-    img: string;
-    title: string;
-    description: string;
+  id: number;
+  img: string;
+  title: string;
+  description: string;
+  price: number;
 };
 
 const AddProduct = () => {
   const [form] = Form.useForm();
 
   const onFinish = (values: Response) => {
-    const existingProducts = JSON.parse(localStorage.getItem('products') || '[]');
+    const existingProducts: Response[] = JSON.parse(localStorage.getItem('products') || '[]');
+    const maxId = existingProducts.length > 0 ? Math.max(...existingProducts.map(product => product.id || 0)) : 0;
 
-    const updatedProducts = [...existingProducts, values];
+    const newProduct = {
+      ...values,
+      id: maxId + 1,
+    };
+
+    const updatedProducts = [...existingProducts, newProduct];
     localStorage.setItem('products', JSON.stringify(updatedProducts));
 
     notification.success({
-      message: 'Product Added',
-      description: 'The product has been added successfully!',
+      message: 'Продукт добавлен',
+      description: 'Продукт был успешно добавлен!',
     });
     form.resetFields();
   };
 
   return (
-    <div style={{ maxWidth: 600, margin: '0 auto', padding: '2rem' }}>
-      <Navigation/>
-      <Form
-        form={form}
-        layout="vertical"
-        onFinish={onFinish}
-      >
-        <Form.Item
-          name="id"
-          label="ID"
-          rules={[{ required: true, message: 'Please input the product ID!' }]}
+    <>
+      <Navigation />
+      <div style={{ maxWidth: 600, margin: '0 auto', padding: '2rem' }}>
+        <h1>Новый продукт</h1>
+        <Form
+          form={form}
+          layout="vertical"
+          onFinish={onFinish}
         >
-          <Input type="number" />
-        </Form.Item>
-        <Form.Item
-          name="img"
-          label="Image URL"
-          rules={[{ required: true, message: 'Please input the image URL!' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="title"
-          label="Title"
-          rules={[{ required: true, message: 'Please input the product title!' }]}
-        >
-          <Input />
-        </Form.Item>
-        <Form.Item
-          name="description"
-          label="Description"
-          rules={[{ required: true, message: 'Please input the product description!' }]}
-        >
-          <Input.TextArea rows={4} />
-        </Form.Item>
-        <Form.Item>
-          <Button type="primary" htmlType="submit">
-            Add Product
-          </Button>
-        </Form.Item>
-      </Form>
-    </div>
+          <Form.Item
+            name="img"
+            label="Ссылка на изображение"
+            rules={[{ required: true, message: 'Пожалуйста, введите URL-адрес изображения!' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="title"
+            label="Название"
+            rules={[{ required: true, message: 'Пожалуйста, введите название продукта!' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="price"
+            label="Цена"
+            rules={[{ required: true, message: 'Пожалуйста, введите цену продукта!' }]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="description"
+            label="Описание"
+            rules={[{ required: true, message: 'Пожалуйста, введите описание продукта!' }]}
+          >
+            <Input.TextArea rows={4} />
+          </Form.Item>
+          <Form.Item>
+            <Button type="primary" htmlType="submit">
+              Добавить продукт
+            </Button>
+          </Form.Item>
+        </Form>
+      </div>
+    </>
   );
 };
 
