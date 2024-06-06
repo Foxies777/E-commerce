@@ -10,20 +10,15 @@ interface User {
 // Create stores and events for handling users
 const $users = createStore<User[]>([]);
 export const addUser = createEvent<User>();
-export const removeUser = createEvent<string>();
-export const clearUsers = createEvent<void>();
+export const removeUser = createEvent<void>();
 
-const $user = createStore<User[]>([]);
+const $user = createStore<User | null>(null);
 
 $user
-    .on(addUser, (state, user) => [...state, user])
+    .on(addUser, (_, user) => user)
     .reset(removeUser);
 
-
-
-$users.on(addUser, (state, user) => [...state, user])
-
-
+$users.on(addUser, (state, user) => [...state, user]);
 persist({
     key: 'users',
     store: $users,
@@ -38,5 +33,6 @@ persist({
     key: 'user',
     store: $user,
     serialize: (value) => JSON.stringify(value),
-    deserialize: (value) => value
-})
+    deserialize: (value) => JSON.parse(value)
+});
+// localStorage.clear();

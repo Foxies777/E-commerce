@@ -1,10 +1,13 @@
 import { ValidationError, errorHandler } from "../api";
 import { Body } from "./model";
 
-export const signIn = async (json: Body) => {
+export const signIn = async (json: Body): Promise<Body | void> => {
     const users = localStorage.getItem('users');
-    let findUser = users?.indexOf(JSON.stringify(json))
+    let parsedUsers: Body[] = users ? JSON.parse(users) : [];
 
+    console.log('Parsed users:', parsedUsers);
+
+    let findUser: Body | undefined = parsedUsers.find(user => user.email === json.email && user.password === json.password);
 
     try {
         if (!isValidEmail(json.email)) {
@@ -15,16 +18,19 @@ export const signIn = async (json: Body) => {
             throw new ValidationError("Длина пароля должна составлять не менее 8 символов");
         }
 
-        if (findUser === -1) {
+        if (!findUser) {
             throw new ValidationError("Неверные почта или пароль");
         }
 
-        const res = json;
-        return res;
+        console.log('User found:', findUser);
+
+        return findUser;
     } catch (error) {
+        console.error('Error during sign-in:', error);
         return await errorHandler(error);
     }
 }
+
 
 export const signUp = async (json: Body) => {
 
@@ -39,7 +45,7 @@ export const signUp = async (json: Body) => {
 
         const res = json
         console.log(res);
-        
+
         return res;
     } catch (error) {
         return await errorHandler(error);
