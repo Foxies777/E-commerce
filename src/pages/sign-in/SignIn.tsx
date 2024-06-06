@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { useUnit } from 'effector-react';
 import { signInFx } from './model';
 import { Button, Card, Form, Input, Row } from 'antd';
@@ -8,10 +8,13 @@ import { REGISTRATION_ROUTE } from '../../utils/const';
 const Auth = () => {
   const [signIn, loading] = useUnit([signInFx, signInFx.pending]);
   const navigate = useNavigate();
+  useEffect(() => {
+    const unsubscribe = signInFx.done.watch(() => {
+      navigate('/profile');
+    });
 
-  signInFx.done.watch(() => {
-    navigate('/profile'); 
-  });
+    return () => unsubscribe();
+  }, [navigate]);
 
   return (
     <Row justify={'center'}>
