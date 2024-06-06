@@ -1,28 +1,42 @@
-import { createEvent, createStore } from "effector";
-import { persist } from "effector-storage/local";
+import { createEvent, createStore } from 'effector';
+import { persist } from 'effector-storage/local';
 
-const $email = createStore('')
-const $password = createStore('')
-export const emailRecieved = createEvent<string>()
-export const emailExpired = createEvent()
-export const passwordRecieved = createEvent<string>()
-export const passwordExpired = createEvent()
+// Define user type
+interface User {
+    email: string;
+    password: string;
+}
 
-$email.on(emailRecieved, (_, email) => email).reset(emailExpired)
-$password.on(passwordRecieved, (_, password) => password).reset(passwordExpired)
+// Create stores and events for handling users
+const $users = createStore<User[]>([]);
+export const addUser = createEvent<User>();
+export const removeUser = createEvent<string>();
+export const clearUsers = createEvent<void>();
 
-export const $isAuth = $email.map(email => !!email)
+const $user = createStore<User[]>([]);
+
+$user
+    .on(addUser, (state, user) => [...state, user])
+    .reset(removeUser);
+
+
+
+$users.on(addUser, (state, user) => [...state, user])
+
 
 persist({
-    key: 'email',
-    store: $email,
-    serialize: (value) => value,
-    deserialize: (value) => value
+    key: 'users',
+    store: $users,
+    serialize: (users) => JSON.stringify(users),
+    deserialize: (value) => {
+        const parsed = JSON.parse(value);
+        return Array.isArray(parsed) ? parsed : [];
+    },
 })
 
 persist({
-    key: 'password',
-    store: $password,
-    serialize: (value) => value,
+    key: 'user',
+    store: $user,
+    serialize: (value) => JSON.stringify(value),
     deserialize: (value) => value
 })

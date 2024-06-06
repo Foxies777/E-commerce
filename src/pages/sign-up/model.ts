@@ -1,24 +1,20 @@
-import { createEffect, sample } from "effector";
-import { signUp } from "../../shared/api/auth";
-import { emailRecieved,passwordRecieved } from "../../shared/auth";
-import { showErrorMessageFx } from "../../shared/notification";
+import { createEffect, sample } from 'effector';
+import { signUp } from '../../shared/api/auth';
+import { addUser } from '../../shared/auth/index';
+import { showErrorMessageFx } from '../../shared/notification';
 
-export const signUpFx = createEffect(signUp)
-
-
-sample({
-    clock: signUpFx.doneData,
-    fn: (clk) => clk.email,
-    target: emailRecieved
-})
+export const signUpFx = createEffect(signUp);
 
 sample({
     clock: signUpFx.doneData,
-    fn: (clk) => clk.password,
-    target: passwordRecieved
-})
+    fn: (response) => ({
+        email: response.email,
+        password: response.password,
+    }),
+    target: addUser,
+});
 
-sample ({
+sample({
     clock: signUpFx.failData,
-    target: showErrorMessageFx
-})
+    target: showErrorMessageFx,
+});
