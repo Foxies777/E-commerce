@@ -1,8 +1,8 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { publicRoutes, authRoutes } from '../routes';
+import { publicRoutes, authRoutes } from '../../routes';
 
 const AppRouter = () => {
-  const isAuth = localStorage.getItem('email');
+  const isAuth = localStorage.getItem('email') || null;
   return (
     <Routes>
       {isAuth ? authRoutes.map(({ path, Component }) => (
