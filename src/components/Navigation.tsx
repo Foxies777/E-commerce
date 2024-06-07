@@ -1,9 +1,15 @@
-import React from 'react'
 import './Navigation.scss'
-import { Link } from 'react-router-dom'
-import { BIN_ROUTE, PRODUSTS_ROUTE, PROFILE_ROUTE } from '../utils/const'
+import { Link, useNavigate } from 'react-router-dom'
+import { CART_ROUTE, PRODUSTS_ROUTE, PROFILE_ROUTE } from '../utils/const'
 import logo from '../assets/logo.svg'
+import { logout } from '../shared/auth'
 const Navigation = () => {
+  const navigate = useNavigate()
+  const logoutHandler = () => {
+    logout()
+    navigate('/')
+  }
+
   return (
     <nav>
       <div><img src={logo} alt="" /></div>
@@ -15,10 +21,10 @@ const Navigation = () => {
           <Link to={PROFILE_ROUTE}>Профиль</Link>
         </li>
         <li>
-          <Link to={BIN_ROUTE}>Корзина</Link>
+          <Link to={CART_ROUTE}>Корзина</Link>
         </li>
         <li>
-          <button type="button">Выйти</button>
+          <button type="button" onClick={logoutHandler}>Выйти</button>
         </li>
       </ul>
     </nav>

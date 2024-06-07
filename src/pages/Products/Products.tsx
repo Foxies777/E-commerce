@@ -16,7 +16,6 @@ const Products = () => {
   const AddProductLocation =() => {
     navigate(ADDPRODUCT_ROUTE)
   }
-  console.log(products);
   
   return (
     <>

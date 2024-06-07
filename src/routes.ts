@@ -1,8 +1,8 @@
 import Products from './pages/Products/Products'
-import { ADDPRODUCT_ROUTE, BIN_ROUTE, LOGIN_ROUTE, PRODUSTS_ROUTE, PROFILE_ROUTE, REGISTRATION_ROUTE } from "./utils/const";
+import { ADDPRODUCT_ROUTE, CART_ROUTE, LOGIN_ROUTE, PRODUSTS_ROUTE, PROFILE_ROUTE, REGISTRATION_ROUTE } from "./utils/const";
 import Profile from "./pages/Profile/Profile";
 import AddProduct from "./pages/AddProduct/AddProduct";
-import Bin from "./pages/Bin/Bin";
+import Cart from "./pages/Cart/Cart";
 import Registration from "./pages/sign-up/SignUp";
 import Auth from './pages/sign-in/SignIn';
 // import { sample } from "effector";
@@ -24,8 +24,8 @@ export const authRoutes = [
         Component: AddProduct
     },
     {
-        path: BIN_ROUTE,
-        Component: Bin
+        path: CART_ROUTE,
+        Component: Cart
     }
 ]
 export const publicRoutes = [

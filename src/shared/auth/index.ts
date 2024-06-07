@@ -1,7 +1,5 @@
-import { createEvent, createStore, createEffect, sample } from 'effector';
+import { createEvent, createStore, createEffect } from 'effector';
 import { persist } from 'effector-storage/local';
-import { signIn } from '../../shared/api/auth';
-import { showErrorMessageFx } from '../../shared/notification';
 
 // Define user type
 interface User {
@@ -13,6 +11,7 @@ interface User {
 const $users = createStore<User[]>([]);
 export const addUser = createEvent<User>();
 export const removeUser = createEvent<void>();
+export const logout = createEvent<void>();
 
 export const $user = createStore<User | null>(null);
 export const fetchUserFx = createEffect(async (): Promise<User | null> => {
@@ -26,7 +25,8 @@ export const fetchUserFx = createEffect(async (): Promise<User | null> => {
 $user
   .on(addUser, (_, user) => user)
   .reset(removeUser)
-  .on(fetchUserFx.doneData, (_, user) => user);
+  .on(fetchUserFx.doneData, (_, user) => user)
+  .reset(logout);
 
 $users.on(addUser, (state, user) => [...state, user]);
 
@@ -49,21 +49,3 @@ persist({
   },
 });
 
-export const signInFx = createEffect(signIn);
-
-sample({
-  clock: signInFx.doneData,
-  fn: (response) => {
-    console.log(response);
-    return {
-      email: response.email,
-      password: response.password,
-    };
-  },
-  target: addUser,
-});
-
-sample({
-  clock: signInFx.failData,
-  target: showErrorMessageFx,
-});

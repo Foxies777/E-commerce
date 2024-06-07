@@ -52,6 +52,11 @@ export const signUp = async (json: Body) => {
     }
 }
 
+export const getUser = async (): Promise<Body | null> => {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+};
+
 function isValidEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);

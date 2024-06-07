@@ -5,7 +5,6 @@ import { showErrorMessageFx } from "../../shared/notification";
 
 export const signInFx = createEffect(signIn)
 
-
 sample({
     clock: signInFx.doneData,
     fn: (response) => {
