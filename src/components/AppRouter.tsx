@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 const AppRouter = () => {
   const user = useUnit($user);
   const fetchUser = useUnit(fetchUserFx);
-
+  
   useEffect(() => {
     fetchUser();
   }, [fetchUser]);

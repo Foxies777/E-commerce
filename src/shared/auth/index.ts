@@ -10,7 +10,6 @@ interface User {
 // Create stores and events for handling users
 const $users = createStore<User[]>([]);
 export const addUser = createEvent<User>();
-export const removeUser = createEvent<void>();
 export const logout = createEvent<void>();
 
 export const $user = createStore<User | null>(null);
@@ -24,7 +23,6 @@ export const fetchUserFx = createEffect(async (): Promise<User | null> => {
 
 $user
   .on(addUser, (_, user) => user)
-  .reset(removeUser)
   .on(fetchUserFx.doneData, (_, user) => user)
   .reset(logout);
 

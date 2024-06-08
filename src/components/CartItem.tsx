@@ -6,7 +6,7 @@ interface CartItemProps {
   title: string;
   description: string;
   price: number;
-  // onRemove: (id: number) => void;
+  onRemove: (id: number) => void;
 }
 
 const CartItem = ({
@@ -15,7 +15,7 @@ const CartItem = ({
   title,
   description,
   price,
-  // onRemove,
+  onRemove,
 }: CartItemProps) => {
   return (
     <Card key={id} className="mb-3" style={{ border: '1px solid black' }}>
@@ -33,7 +33,7 @@ const CartItem = ({
           <div>
             <strong>{price} руб</strong>
           </div>
-          {/* <Button variant="danger" onClick={() => onRemove(id)}>Удалить</Button> */}
+          <Button variant="danger" onClick={() => onRemove(id)}>Удалить</Button>
         </div>
       </Card.Body>
     </Card>

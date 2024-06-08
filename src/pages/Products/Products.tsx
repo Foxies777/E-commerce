@@ -13,10 +13,10 @@ const Products = () => {
   useEffect(() => {
     getProductsFx();
   }, []);
-  const AddProductLocation =() => {
+  const AddProductLocation = () => {
     navigate(ADDPRODUCT_ROUTE)
   }
-  
+
   return (
     <>
       <Navigation />
@@ -31,10 +31,11 @@ const Products = () => {
         ) : (
           products.map((item) => (
             <Product
+              key={item.id}
               id={item.id}
               img={item.img}
               title={item.title}
-              description={item.description} 
+              description={item.description}
               price={item.price} />
           ))
         )}

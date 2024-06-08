@@ -13,6 +13,7 @@ nav {
         gap: 30px;
         align-items: center;
         margin: 0;
+
         li {
             list-style: none;
 
@@ -42,6 +43,23 @@ nav {
                     border: 2px solid #fff;
                 }
 
+            }
+
+            span {
+                font-size: 10px;
+                line-height: 13px;
+                text-transform: uppercase;
+                color: #fff;
+                text-align: center;
+                display: inline-block;
+                min-width: 16px;
+                height: 16px;
+                position: absolute;
+                top: -6px;
+                right: -8px;
+                background: #f55123;
+                padding: 2px 3px 1px;
+                border-radius: 16px;
             }
         }
     }

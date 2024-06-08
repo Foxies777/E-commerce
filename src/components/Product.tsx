@@ -1,13 +1,13 @@
-import { Button, Card } from 'react-bootstrap'
+import { Button, Card } from 'react-bootstrap';
 import { addToCart } from '../shared/cart';
 import { useUnit } from 'effector-react';
 
 interface ProductProps {
-  id: number,
-  img: string,
-  title: string,
-  description: string,
-  price: number,
+  id: number;
+  img: string;
+  title: string;
+  description: string;
+  price: number;
 }
 
 const Product = ({
@@ -16,15 +16,14 @@ const Product = ({
   title,
   description,
   price,
-}: ProductProps
-
-) => {
+}: ProductProps) => {
   const addProductToCart = useUnit(addToCart);
 
   const handleAddToCart = () => {
     const product = { id, img, title, description, price };
     addProductToCart(product);
   };
+
   return (
     <Card key={id} style={{ width: '18rem' }}>
       <div style={{ height: '200px', overflow: 'hidden' }}>
@@ -39,7 +38,7 @@ const Product = ({
         <Button variant="primary" onClick={handleAddToCart}>В корзину</Button>
       </Card.Body>
     </Card>
-  )
-}
+  );
+};
 
-export default Product
+export default Product;

@@ -7,13 +7,11 @@ export const signInFx = createEffect(signIn)
 
 sample({
     clock: signInFx.doneData,
-    fn: (response) => {
-        console.log(response)
-        return {
-            email: response.email,
-            password: response.password,
-        }
-    },
+    fn: (response) => ({
+        email: response.email,
+        password: response.password,
+
+    }),
     target: addUser,
 });
 

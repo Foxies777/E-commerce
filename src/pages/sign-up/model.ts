@@ -8,7 +8,6 @@ export const signUpFx = createEffect(signUp);
 sample({
     clock: signUpFx.doneData,
     fn: (response) => {
-        console.log('signUpFx doneData:', response);
         return {
             email: response.email,
             password: response.password,

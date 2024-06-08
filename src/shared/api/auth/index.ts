@@ -5,7 +5,6 @@ export const signIn = async (json: Body): Promise<Body | void> => {
     const users = localStorage.getItem('users');
     let parsedUsers: Body[] = users ? JSON.parse(users) : [];
 
-    console.log('Parsed users:', parsedUsers);
 
     let findUser: Body | undefined = parsedUsers.find(user => user.email === json.email && user.password === json.password);
 
@@ -22,7 +21,6 @@ export const signIn = async (json: Body): Promise<Body | void> => {
             throw new ValidationError("Неверные почта или пароль");
         }
 
-        console.log('User found:', findUser);
 
         return findUser;
     } catch (error) {
@@ -44,7 +42,6 @@ export const signUp = async (json: Body) => {
         }
 
         const res = json
-        console.log(res);
 
         return res;
     } catch (error) {

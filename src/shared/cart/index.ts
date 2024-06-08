@@ -1,7 +1,7 @@
-import { createEvent, createStore } from 'effector';
+import { createEffect, createEvent, createStore, sample } from 'effector';
 import { persist } from 'effector-storage/local';
+import { addProductToCart, getCart, removeItemFromLocalStorage } from '../api/cart';
 
-// Define product type
 interface Product {
   id: number;
   img: string;
@@ -11,9 +11,16 @@ interface Product {
 }
 
 export const addToCart = createEvent<Product>();
+export const removeFromCart = createEvent<{ id: number; index: number }>();
 
-const $cart = createStore<Product[]>([])
-  .on(addToCart, (state, product) => [...state, product]);
+export const fetchCartFx = createEffect(getCart);
+export const addProductFx = createEffect(addProductToCart);
+export const removeProductFx = createEffect(removeItemFromLocalStorage);
+
+export const $cart = createStore<Product[]>([])
+  .on(fetchCartFx.doneData, (_, cart) => cart)
+  .on(addProductFx.doneData, (_, cart) => cart)
+  .on(removeProductFx.doneData, (_, cart) => cart);
 
 persist({
   key: 'cart',
@@ -23,4 +30,15 @@ persist({
     const parsed = JSON.parse(value);
     return Array.isArray(parsed) ? parsed : [];
   },
+});
+
+sample({
+  clock: addToCart,
+  target: addProductFx,
+});
+
+sample({
+  source: addToCart,
+  target: $cart,
+  fn: (cart: any, product: any) => [...cart, product]
 });
