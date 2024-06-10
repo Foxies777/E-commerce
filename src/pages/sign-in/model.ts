@@ -8,6 +8,7 @@ export const signInFx = createEffect(signIn)
 sample({
     clock: signInFx.doneData,
     fn: (response) => ({
+        id: response.id,
         email: response.email,
         password: response.password,
 

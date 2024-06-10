@@ -1,6 +1,8 @@
+// components/Product.tsx
 import { Button, Card } from 'react-bootstrap';
 import { addToCart } from '../shared/cart';
 import { useUnit } from 'effector-react';
+import { $user } from '../shared/auth';
 
 interface ProductProps {
   id: number;
@@ -18,10 +20,15 @@ const Product = ({
   price,
 }: ProductProps) => {
   const addProductToCart = useUnit(addToCart);
+  const user = useUnit($user);
 
   const handleAddToCart = () => {
-    const product = { id, img, title, description, price };
-    addProductToCart(product);
+    if (user) {
+      const product = { id, img, title, description, price, user_id: user.id };
+      addProductToCart(product);
+    } else {
+      console.error('User not logged in');
+    }
   };
 
   return (

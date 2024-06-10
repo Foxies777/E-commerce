@@ -1,3 +1,4 @@
+// shared/cart/index.ts
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { persist } from 'effector-storage/local';
 import { addProductToCart, getCart, removeItemFromLocalStorage } from '../api/cart';
@@ -8,6 +9,7 @@ interface Product {
   title: string;
   description: string;
   price: number;
+  user_id: string;
 }
 
 export const addToCart = createEvent<Product>();
@@ -33,12 +35,13 @@ persist({
 });
 
 sample({
-  clock: addToCart,
+  source: addToCart,
   target: addProductFx,
 });
 
 sample({
-  source: addToCart,
+  source: $cart,
+  clock: addToCart,
+  fn: (cart, product) => [...cart, product],
   target: $cart,
-  fn: (cart: any, product: any) => [...cart, product]
 });

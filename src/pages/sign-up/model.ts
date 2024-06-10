@@ -9,6 +9,7 @@ sample({
     clock: signUpFx.doneData,
     fn: (response) => {
         return {
+            id: response.id,
             email: response.email,
             password: response.password,
         };

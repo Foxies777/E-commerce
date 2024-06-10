@@ -1,8 +1,9 @@
 export type Response = {
-    count: number;
     id: number;
+    count: number;
     img: string;
     title: string;
     description: string;
     price: number;
+    user_id: string;
 }

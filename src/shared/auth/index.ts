@@ -1,13 +1,12 @@
 import { createEvent, createStore, createEffect } from 'effector';
 import { persist } from 'effector-storage/local';
 
-// Define user type
 interface User {
+  id: string;
   email: string;
   password: string;
 }
 
-// Create stores and events for handling users
 const $users = createStore<User[]>([]);
 export const addUser = createEvent<User>();
 export const logout = createEvent<void>();

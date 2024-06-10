@@ -22,7 +22,7 @@ const Profile = () => {
         <div className='profile'>
           <h1>Профиль</h1>
           <p>Email: <strong>{user.email}</strong></p>
-          <p>Password: <strong>{user.password}</strong></p>
+          <p>Пароль: <strong>{user.password}</strong></p>
         </div>
       ) : (
         <div className='profile'>

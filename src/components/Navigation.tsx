@@ -2,7 +2,7 @@ import './Navigation.scss'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import { CART_ROUTE, PRODUSTS_ROUTE, PROFILE_ROUTE } from '../utils/const'
 import logo from '../assets/logo.svg'
-import { logout } from '../shared/auth'
+import { $user, logout } from '../shared/auth'
 import { useUnit } from 'effector-react'
 import { useEffect } from 'react'
 import { Spin } from 'antd'
@@ -10,6 +10,7 @@ import { $cart, fetchCartFx } from '../shared/cart'
 
 const Navigation = () => {
   const [cart, loading] = useUnit([$cart, fetchCartFx.pending]);
+  const user = useUnit($user)
   const location = useLocation();
 
   useEffect(() => {
@@ -21,8 +22,8 @@ const Navigation = () => {
     logout();
     navigate('/');
   }
-
-  const cartCount = cart.length;
+  
+  let cartCount = cart.filter(item => item.user_id === user?.id).length 
 
   return (
     <>
