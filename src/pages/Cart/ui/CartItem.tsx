@@ -18,10 +18,10 @@ const CartItem = ({
   onRemove,
 }: CartItemProps) => {
   return (
-    <Card key={id} className="mb-3" style={{ border: '1px solid black' }}>
+    <Card key={id} className="cart-item-content mb-3" >
       <Card.Body className="d-flex justify-content-between align-items-center">
         <div className="d-flex">
-          <div style={{ height: '100px', width: '100px', overflow: 'hidden' }}>
+          <div className='cart-img'>
             <Card.Img variant="top" src={img} />
           </div>
           <div className="ms-3">

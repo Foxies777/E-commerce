@@ -18,7 +18,22 @@
     cursor: pointer;
     border: 2px dashed #222;
     transition: .3s;
-    &:hover{
+
+    &:hover {
         background-color: #dbdbdb;
     }
+}
+
+.product-item {
+    &__content {
+        width: 18rem;
+    }
+    &__image {
+        height: 200px;
+        overflow: hidden;
+    }
+}
+.spin{
+    display: flex;
+    justify-content: center;
 }

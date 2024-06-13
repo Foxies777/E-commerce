@@ -1,12 +1,13 @@
 import './Navigation.scss'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
-import { CART_ROUTE, PRODUSTS_ROUTE, PROFILE_ROUTE } from '../utils/const'
 import logo from '../assets/logo.svg'
 import { $user, logout } from '../shared/auth'
 import { useUnit } from 'effector-react'
 import { useEffect } from 'react'
 import { Spin } from 'antd'
 import { $cart, fetchCartFx } from '../shared/cart'
+import { ERoutes } from '../utils/const'
+
 
 const Navigation = () => {
   const [cart, loading] = useUnit([$cart, fetchCartFx.pending]);
@@ -23,7 +24,7 @@ const Navigation = () => {
     navigate('/');
   }
   
-  let cartCount = cart.filter(item => item.user_id === user?.id).length 
+  const cartCount = cart.filter(item => item.user_id === user?.id).length 
 
   return (
     <>
@@ -34,14 +35,14 @@ const Navigation = () => {
           <div><img src={logo} alt="logo" /></div>
           <ul>
             <li>
-              <Link to={PRODUSTS_ROUTE}>Продукты</Link>
+              <Link to={ERoutes.PRODUSTS}>Продукты</Link>
             </li>
             <li>
-              <Link to={PROFILE_ROUTE}>Профиль</Link>
+              <Link to={ERoutes.PROFILE}>Профиль</Link>
             </li>
-            <li style={{ position: 'relative' }}>
-              <Link to={CART_ROUTE}>Корзина</Link>
-              {location.pathname !== CART_ROUTE && cartCount > 0 && (
+            <li className='relative'>
+              <Link to={ERoutes.CART}>Корзина</Link>
+              {location.pathname !== ERoutes.CART && cartCount > 0 && (
                 <span>{cartCount}</span>
               )}
             </li>

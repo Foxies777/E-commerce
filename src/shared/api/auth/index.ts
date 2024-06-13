@@ -4,10 +4,10 @@ import { v4 as uuidv4 } from 'uuid';
 
 export const signIn = async (json: Body): Promise<Body> => {
     const users = localStorage.getItem('users');
-    let parsedUsers: Body[] = users ? JSON.parse(users) : [];
+    const parsedUsers: Body[] = users ? JSON.parse(users) : [];
 
 
-    let findUser: Body | undefined = parsedUsers.find(user => user.email === json.email && user.password === json.password);
+    const findUser: Body | undefined = parsedUsers.find(user => user.email === json.email && user.password === json.password);
 
     try {
         if (!isValidEmail(json.email)) {

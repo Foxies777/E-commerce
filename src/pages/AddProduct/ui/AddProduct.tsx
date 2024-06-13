@@ -1,6 +1,6 @@
 import { Form, Input, Button, notification } from 'antd';
-import Navigation from '../../components/Navigation';
-
+import Navigation from '../../../components/Navigation';
+import '../index'
 export type Response = {
   id: number;
   img: string;
@@ -15,7 +15,6 @@ const AddProduct = () => {
   const onFinish = (values: Response) => {
     const existingProducts: Response[] = JSON.parse(localStorage.getItem('products') || '[]');
     const maxId = existingProducts.length > 0 ? Math.max(...existingProducts.map(product => product.id || 0)) : 0;
-
     const newProduct = {
       ...values,
       id: maxId + 1,
@@ -34,7 +33,7 @@ const AddProduct = () => {
   return (
     <>
       <Navigation />
-      <div style={{ maxWidth: 600, margin: '0 auto', padding: '2rem' }}>
+      <div className='container'>
         <h1>Новый продукт</h1>
         <Form
           form={form}

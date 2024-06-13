@@ -1,37 +1,32 @@
-import { useUnit } from 'effector-react'
-import { useEffect } from 'react'
-import { signUpFx } from './model'
-import { Col, Form, Input, Row } from 'antd'
-import { Link, useNavigate } from 'react-router-dom'
-import { LOGIN_ROUTE } from '../../utils/const'
-import logo from '../../assets/logo.svg'
-import '../sign-in/SignIn.scss'
-const Registration = () => {
-  const [signUp, loading] = useUnit([signUpFx, signUpFx.pending])
-
+import { signInFx, useAuth } from '../index';
+import { Col, Form, Input, Row } from 'antd';
+import { Link, useNavigate } from 'react-router-dom';
+import { ERoutes } from '../../../utils/const';
+import logo from '../../../assets/logo.svg'
+import '../index'
+const Auth = () => {
+  const [signIn, loading] = useAuth();
   const navigate = useNavigate();
+  signInFx.done.watch(() => {
+    navigate('/profile');
+  })
 
-  useEffect(() => {
-    signUpFx.done.watch(() => {
-      navigate('/profile');
-    });
-  }, []);
   return (
     <Col className='styles'>
       <Row justify={'center'}>
         <div>
           <div className='header'>
             <img src={logo} alt="" />
-            <h1>Регистрация</h1>
+            <h1>Вход</h1>
           </div>
           <Form
+            className='form'
             name="basic"
             labelCol={{ span: 8 }}
             wrapperCol={{ span: 16 }}
-            style={{ maxWidth: 600 }}
             initialValues={{ remember: true }}
             autoComplete="off"
-            onFinish={signUp}
+            onFinish={signIn}
           >
             <Form.Item
               label="Email"
@@ -51,15 +46,15 @@ const Registration = () => {
 
             <Form.Item>
               <div className='buttons'>
-                <button className='button' type='submit'>Регистрация</button>
-                <Link className='button' to={LOGIN_ROUTE}>Войти</Link>
+                <button className='button' type='submit'>Войти</button>
+                <Link className='button' to={ERoutes.REGISTRATION}>Регистрация</Link>
               </div>
             </Form.Item>
           </Form>
         </div>
       </Row>
     </Col>
-  )
+  );
 }
 
-export default Registration
+export default Auth;

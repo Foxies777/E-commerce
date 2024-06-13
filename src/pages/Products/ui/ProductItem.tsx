@@ -1,8 +1,8 @@
 // components/Product.tsx
 import { Button, Card } from 'react-bootstrap';
-import { addToCart } from '../shared/cart';
+import { addToCart } from '../../../shared/cart';
 import { useUnit } from 'effector-react';
-import { $user } from '../shared/auth';
+import { $user } from '../../../shared/auth';
 
 interface ProductProps {
   id: number;
@@ -32,8 +32,8 @@ const Product = ({
   };
 
   return (
-    <Card key={id} style={{ width: '18rem' }}>
-      <div style={{ height: '200px', overflow: 'hidden' }}>
+    <Card key={id} className='product-item__content'>
+      <div className='product-item__image'>
         <Card.Img variant="top" src={img} />
       </div>
       <Card.Body>

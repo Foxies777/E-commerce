@@ -1,20 +1,14 @@
-import { useUnit } from "effector-react";
-import { getProductsFx, $products } from "./model";
+import { ProductItem, useProduct } from "../index";
 import { Spin } from "antd";
-import { useEffect } from "react";
-import Navigation from "../../components/Navigation";
-import Product from "../../components/Product";
-import './Product.scss'
+import Navigation from "../../../components/Navigation";
 import { useNavigate } from "react-router-dom";
-import { ADDPRODUCT_ROUTE } from "../../utils/const";
+import { ERoutes } from "../../../utils/const";
+import '../index'
 const Products = () => {
-  const [products, loading] = useUnit([$products, getProductsFx.pending]);
+  const [products, loading] = useProduct();
   const navigate = useNavigate()
-  useEffect(() => {
-    getProductsFx();
-  }, []);
   const AddProductLocation = () => {
-    navigate(ADDPRODUCT_ROUTE)
+    navigate(ERoutes.ADDPRODUCT)
   }
 
   return (
@@ -25,12 +19,12 @@ const Products = () => {
           Добивить <br /> +
         </div>
         {loading ? (
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div className="spin">
             <Spin />
           </div>
         ) : (
           products.map((item) => (
-            <Product
+            <ProductItem
               key={item.id}
               id={item.id}
               img={item.img}

@@ -1,6 +1,7 @@
 import { createEffect, restore, sample } from "effector";
-import { getCart, removeItemFromLocalStorage } from "../../shared/api/cart";
-import { showSuccessMessageFx } from "../../shared/notification";
+import { getCart, removeItemFromLocalStorage } from "../../../shared/api/cart";
+import { showSuccessMessageFx } from "../../../shared/notification";
+
 
 
 export const getCartFx = createEffect(getCart);

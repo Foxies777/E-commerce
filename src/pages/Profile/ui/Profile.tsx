@@ -1,21 +1,15 @@
-import { useEffect } from 'react';
-import Navigation from '../../components/Navigation';
-import { $user, getUserFx } from './model';
-import { useUnit } from 'effector-react';
+import Navigation from '../../../components/Navigation';
+import { useProfile } from '../index';
 import { Spin } from 'antd';
-import './Profile.scss'
+import '../index'
 const Profile = () => {
-  const [user, loading] = useUnit([$user, getUserFx.pending]);
-
-  useEffect(() => {
-    getUserFx();
-  }, []);
+  const [user, loading] = useProfile();
 
   return (
     <>
       <Navigation />
       {loading ? (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+        <div className='spin'>
           <Spin />
         </div>
       ) : user ? (

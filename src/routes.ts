@@ -1,47 +1,35 @@
-import Products from './pages/Products/Products'
-import { ADDPRODUCT_ROUTE, CART_ROUTE, LOGIN_ROUTE, PRODUSTS_ROUTE, PROFILE_ROUTE, REGISTRATION_ROUTE } from "./utils/const";
-import Profile from "./pages/Profile/Profile";
-import AddProduct from "./pages/AddProduct/AddProduct";
-import Cart from "./pages/Cart/Cart";
-import Registration from "./pages/sign-up/SignUp";
-import Auth from './pages/sign-in/SignIn';
-// import { sample } from "effector";
-// import { appStarted } from "./shared/config/init";
-// import { createBrowserHistory } from "history";
-
+import Products from './pages/Products/ui/Products'
+import Profile from "./pages/Profile/ui/Profile";
+import AddProduct from "./pages/AddProduct/ui/AddProduct";
+import Cart from "./pages/Cart/ui/Cart";
+import Registration from "./pages/sign-up/ui/SignUp";
+import Auth from './pages/sign-in/ui/SignIn';
+import { ERoutes } from './utils/const';
 
 export const authRoutes = [
     {
-        path: PRODUSTS_ROUTE,
+        path: ERoutes.PRODUSTS,
         Component: Products,
     },
     {
-        path: PROFILE_ROUTE,
+        path: ERoutes.PROFILE,
         Component: Profile
     },
     {
-        path: ADDPRODUCT_ROUTE,
+        path: ERoutes.ADDPRODUCT,
         Component: AddProduct
     },
     {
-        path: CART_ROUTE,
+        path: ERoutes.CART,
         Component: Cart
     }
 ]
 export const publicRoutes = [
     {
-        path: LOGIN_ROUTE,
+        path: ERoutes.LOGIN,
         Component: Auth,
     }, {
-        path: REGISTRATION_ROUTE,
+        path: ERoutes.REGISTRATION,
         Component: Registration,
     },
 ]
-
-// export const history = createHistoryRouter
-
-// sample({
-//     clock: appStarted,
-//     fn: () => createBrowserHistory(),
-//     target: 
-// })

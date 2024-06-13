@@ -1,5 +1,5 @@
 import { createEffect, restore } from "effector";
-import { getUser } from "../../shared/api/auth";
+import { getUser } from "../../../shared/api/auth";
 
 
 export const getUserFx = createEffect(getUser);

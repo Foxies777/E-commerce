@@ -1,5 +1,5 @@
 import { createEffect, restore } from "effector";
-import { getProduct } from "../../shared/api/posts";
+import { getProduct } from "../../../shared/api/posts";
 
 
 export const getProductsFx = createEffect(getProduct);

@@ -1,5 +1,5 @@
 import { createEffect, sample } from "effector";
-import { addProduct } from "../../shared/posts";
+import { addProduct } from "../../../shared/posts";
 
 export const addProductFx = createEffect(addProduct)
 

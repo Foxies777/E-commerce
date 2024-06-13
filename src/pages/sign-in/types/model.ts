@@ -1,7 +1,7 @@
 import { createEffect, sample } from "effector";
-import { signIn } from "../../shared/api/auth";
-import { addUser } from "../../shared/auth";
-import { showErrorMessageFx } from "../../shared/notification";
+import { signIn } from "../../../shared/api/auth";
+import { addUser } from "../../../shared/auth";
+import { showErrorMessageFx } from "../../../shared/notification";
 
 export const signInFx = createEffect(signIn)
 
