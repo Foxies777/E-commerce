@@ -1,7 +1,4 @@
 import ky, { HTTPError } from "ky"
-
-// export const api = ky.create({prefixUrl: import.meta.env.BASE_URL})
-
 export class ValidationError extends Error {
     constructor(message: string) {
         super(message);

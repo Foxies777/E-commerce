@@ -1,4 +1,4 @@
-// shared/cart/index.ts
+
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { persist } from 'effector-storage/local';
 import { addProductToCart, getCart, removeItemFromLocalStorage } from '../api/cart';

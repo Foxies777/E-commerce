@@ -34,7 +34,7 @@ const Product = ({
   return (
     <Card key={id} className='product-item__content'>
       <div className='product-item__image'>
-        <Card.Img variant="top" src={img} />
+        <Card.Img variant="top" src={img} alt={title} />
       </div>
       <Card.Body>
         <Card.Title>{title}</Card.Title>
