@@ -13,7 +13,7 @@ export const errorHandler = async (error: unknown) => {
         throw new Error(serverMessage);
     } else {
         if (error instanceof ValidationError) {
-            throw error; 
+            throw error;
         } else {
             throw new Error(httpError.message);
         }
@@ -36,4 +36,43 @@ try {
     validateEmailAndPassword("invalidemail", "short");
 } catch (error) {
     errorHandler(error);
+}
+
+
+
+
+export enum EStorageItems {
+    CART = "cart",
+    PRODUCTS = "products",
+    USERS = "users",
+    USER = "user"
+}
+
+type TStorageDataCart = {
+    id: string;
+    count: number;
+    img: string;
+    title: string;
+    description: string;
+    price: number;
+    user_id: string;
+};
+type TStorageDataProducts = { productId: string };
+type TStorageDataUsers = { id: string };
+type TStorageDataUser = { id: string };
+
+type TStorageData<T extends string> =
+    T extends EStorageItems.CART[] ? TStorageDataCart :
+    T extends EStorageItems.PRODUCTS ? TStorageDataProducts :
+    T extends EStorageItems.USERS ? TStorageDataUsers :
+    T extends EStorageItems.USER ? TStorageDataUser :
+    unknown;
+
+export class LocalStorageAPI {
+    public static setItem<T extends EStorageItems>(
+        type: T,
+        data: TStorageData<T>
+    ) {
+        localStorage.setItem(type, JSON.stringify(data));
+    }
 }

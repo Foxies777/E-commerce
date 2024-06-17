@@ -1,3 +1,4 @@
+import { EStorageItems, LocalStorageAPI } from "../api";
 import { Response } from "./model";
 
 export const getCart = async (): Promise<Response[]> => {
@@ -10,7 +11,9 @@ export const removeItemsFromLocalStorage = async (id: number): Promise<void> => 
     if (cart) {
         const parsedCart = JSON.parse(cart);
         const updatedCart = parsedCart.filter((item: Response) => item.id !== id);
-        localStorage.setItem('cart', JSON.stringify(updatedCart));
+        LocalStorageAPI.setItem(EStorageItems.CART, updatedCart);
+        // localStorage.setItem('cart', JSON.stringify(updatedCart));
+
     }
 };
 export const removeItemFromLocalStorage = async (id: number, index: number): Promise<void> => {
@@ -18,7 +21,9 @@ export const removeItemFromLocalStorage = async (id: number, index: number): Pro
     if (cart) {
         const parsedCart = JSON.parse(cart);
         const updatedCart = parsedCart.filter((item: Response, idx: number) => item.id !== id || idx !== index);
-        localStorage.setItem('cart', JSON.stringify(updatedCart));
+        // localStorage.setItem('cart', JSON.stringify(updatedCart));
+        LocalStorageAPI.setItem(EStorageItems.CART, updatedCart);
+
     }
 };
 export const addItemToLocalStorage = async (id: number, index: number): Promise<void> => {
@@ -37,8 +42,8 @@ export const addItemToLocalStorage = async (id: number, index: number): Promise<
             throw new Error(`Item with id ${id} not found`);
         }
     }
-
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    LocalStorageAPI.setItem(EStorageItems.CART, updatedCart);
+    // localStorage.setItem('cart', JSON.stringify(updatedCart));
 };
 
 export const addProductToCart = async (product: Response) => {
@@ -46,11 +51,13 @@ export const addProductToCart = async (product: Response) => {
     if (cart) {
         const parsedCart = JSON.parse(cart);
         const updatedCart = [...parsedCart, product];
-        localStorage.setItem('cart', JSON.stringify(updatedCart));
+        LocalStorageAPI.setItem(EStorageItems.CART, updatedCart);
+        // localStorage.setItem('cart', JSON.stringify(updatedCart));
         return updatedCart;
     } else {
         const newCart = [product];
-        localStorage.setItem('cart', JSON.stringify(newCart));
+        LocalStorageAPI.setItem(EStorageItems.CART, newCart);
+        // localStorage.setItem('cart', JSON.stringify(newCart));
         return newCart;
     }
 };
