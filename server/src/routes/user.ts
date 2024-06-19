@@ -1,21 +1,11 @@
-
-import { Router, Request, Response } from 'express';
-import { PrismaClient } from '@prisma/client';
+import { Router } from 'express';
+import UserController from '../controllers/userController.js';
+import authenticate from '../middleware/userMiddleware.js';
 
 const router = Router();
-const prisma = new PrismaClient();
 
-router.get('/', async (req: Request, res: Response) => {
-  const users = await prisma.user.findMany();
-  res.json(users);
-});
-
-router.post('/', async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-  const user = await prisma.user.create({
-    data: { email, password },
-  });
-  res.json(user);
-});
+router.post('/registration', UserController.registration);
+router.post('/login', UserController.login);
+router.get('/check', authenticate, UserController.check);
 
 export default router;
