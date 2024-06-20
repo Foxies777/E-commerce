@@ -1,48 +1,21 @@
-import { createEvent, createStore, createEffect } from 'effector';
-import { persist } from 'effector-storage/local';
+import { createEvent, createStore } from "effector";
+import { persist } from "effector-storage/local";
 
-interface User {
-  id: string;
-  email: string;
-  password: string;
-}
+export const $token = createStore("");
+export const tokenRecived = createEvent<string>();
+export const tokenExprired = createEvent();
 
-const $users = createStore<User[]>([]);
-export const addUser = createEvent<User>();
-export const logout = createEvent<void>();
+$token.on(tokenRecived, (_, token) => token).reset(tokenExprired);
 
-export const $user = createStore<User | null>(null);
-export const fetchUserFx = createEffect(async (): Promise<User | null> => {
-  const userString = localStorage.getItem('user');
-  if (userString) {
-    return JSON.parse(userString) as User;
-  }
-  return null;
-});
-
-$user
-  .on(addUser, (_, user) => user)
-  .on(fetchUserFx.doneData, (_, user) => user)
-  .reset(logout);
-
-$users.on(addUser, (state, user) => [...state, user]);
+export const $isAuth = $token.map((state) => !!state);
 
 persist({
-  key: 'users',
-  store: $users,
-  serialize: (users) => JSON.stringify(users),
-  deserialize: (value) => {
-    const parsed = JSON.parse(value);
-    return Array.isArray(parsed) ? parsed : [];
+  store: $token,
+  key: "token",
+  serialize(value) {
+    return value;
+  },
+  deserialize(value) {
+    return value;
   },
 });
-
-persist({
-  key: 'user',
-  store: $user,
-  serialize: (value) => JSON.stringify(value),
-  deserialize: (value) => {
-    return value ? JSON.parse(value) : null;
-  },
-});
-
