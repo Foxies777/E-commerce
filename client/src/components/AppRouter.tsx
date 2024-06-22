@@ -1,17 +1,13 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useUnit } from 'effector-react';
-import { publicRoutes, authRoutes } from '../routes';
-import { fetchUserFx, $user } from '../shared/auth';
-import { useEffect } from 'react';
+import { authRoutes, publicRoutes } from '../routes';
+import { $isAuth } from '../shared/auth';
+
 
 const AppRouter = () => {
-  const user = useUnit($user);
-  const fetchUser = useUnit(fetchUserFx);
-  
-  useEffect(() => {
-    fetchUser();
-  }, [fetchUser]);
+  const user = useUnit($isAuth);
 
+  
   return (
     <Routes>
       {user ? authRoutes.map(({ path, Component }) => (

@@ -7,13 +7,12 @@ export const signInFx = createEffect(signIn);
 
 sample({
   clock: signInFx.doneData,
-  source: $token,
-  fn(_, clk) {
-    return clk.accessToken;
+  fn: (response) => {
+    console.log("signInFx.doneData response:", response);
+    return response.token;
   },
   target: tokenRecived,
 });
-
 
 sample({
   clock: signInFx.failData,

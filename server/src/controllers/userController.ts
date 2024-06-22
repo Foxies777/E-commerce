@@ -51,6 +51,15 @@ class UserController {
         const token = generateJWT(id, email);
         return res.json({ token });
     }
+    async getUser(req: Request, res: Response) {
+        const { id } = req.params;
+        const user = await prisma.user.findUnique({ where: { id: Number(id) } });
+        if (!user) {
+            return res.status(404).json({ message: 'Пользователь не найден' });
+        }
+        return res.json(user);
+    }
+
 }
 
 export default new UserController();

@@ -1,7 +1,7 @@
 import Products from './pages/Products/ui/Products'
 import Profile from "./pages/Profile/ui/Profile";
 import AddProduct from "./pages/AddProduct/ui/AddProduct";
-import Cart from "./pages/Cart/ui/Cart";
+// import Cart from "./pages/Cart/ui/Cart";
 import Registration from "./pages/sign-up/ui/SignUp";
 import Auth from './pages/sign-in/ui/SignIn';
 import { ERoutes } from './utils/const';
@@ -19,10 +19,10 @@ export const authRoutes = [
         path: ERoutes.ADDPRODUCT,
         Component: AddProduct
     },
-    {
-        path: ERoutes.CART,
-        Component: Cart
-    }
+    // {
+    //     path: ERoutes.CART,
+    //     Component: Cart
+    // }
 ]
 export const publicRoutes = [
     {

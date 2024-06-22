@@ -7,5 +7,6 @@ const router = Router();
 router.post('/registration', UserController.registration);
 router.post('/login', UserController.login);
 router.get('/check', authenticate, UserController.check);
+router.get('/getUser/:id', authenticate, UserController.getUser);
 
 export default router;
