@@ -1,7 +1,8 @@
 import Navigation from '../../../components/Navigation';
 import { useProfile } from '../index';
 import { Spin } from 'antd';
-import '../index'
+import '../styles/Profile.scss';
+
 const Profile = () => {
   const [user, loading] = useProfile();
 

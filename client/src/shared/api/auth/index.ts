@@ -1,14 +1,8 @@
-import { ValidationError, errorHandler } from "../api";
-import { Body } from "./model";
-import { v4 as uuidv4 } from 'uuid';
+import { jwtDecode } from "jwt-decode";
+import { ValidationError, api, errorHandler } from "../api";
+import { Body, Response, User } from "./model";
 
-export const signIn = async (json: Body): Promise<Body> => {
-    const users = localStorage.getItem('users');
-    const parsedUsers: Body[] = users ? JSON.parse(users) : [];
-
-
-    const findUser: Body | undefined = parsedUsers.find(user => user.email === json.email && user.password === json.password);
-
+export const signIn = async (json: Body): Promise<Response> => {
     try {
         if (!isValidEmail(json.email)) {
             throw new ValidationError("Неверно указана почта");
@@ -18,20 +12,15 @@ export const signIn = async (json: Body): Promise<Body> => {
             throw new ValidationError("Длина пароля должна составлять не менее 8 символов");
         }
 
-        if (!findUser) {
-            throw new ValidationError("Неверные почта или пароль");
-        }
-
-        console.log(findUser);
-
-        return findUser;
+        const res = await api.post("users/login", { json }).json<Response>();
+        return res;
     } catch (error) {
         console.error('Error during sign-in:', error);
         return await errorHandler(error);
     }
 }
 
-export const signUp = async (json: Omit<Body, 'id'>): Promise<Body> => {
+export const signUp = async (json: Omit<Body, 'id'>): Promise<Response> => {
     try {
         if (!isValidEmail(json.email)) {
             throw new ValidationError('Неверно указана почта');
@@ -40,37 +29,32 @@ export const signUp = async (json: Omit<Body, 'id'>): Promise<Body> => {
         if (!isValidPassword(json.password)) {
             throw new ValidationError('Длина пароля должна составлять не менее 8 символов');
         }
-        const existingUser = await getUserByEmail(json.email);
-        if (existingUser) {
-            throw new ValidationError('Пользователь с такой почтой уже существует');
-        }
-        const res: Body = {
-            id: uuidv4(),
-            ...json,
-        };
-        console.log(res);
 
+        const res = await api.post("users/registration", { json }).json<Response>();
         return res;
     } catch (error) {
         return await errorHandler(error);
     }
 };
 
-export const getUserByEmail = async (email: string): Promise<Body | null> => {
-    const users = await getUsers();
-    return users.find(user => user.email === email) || null;
+export const getUser = async (token: string): Promise<User> => {
+    try {
+        // Предположим, что токен JWT и содержит ID пользователя
+        const decodedToken: { id: string } = jwtDecode(token);
+        const userId = decodedToken.id;
+
+        const res = await api.get(`users/getUser/${userId}`, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            }
+        }).json<User>();
+        return res;
+    } catch (error) {
+        return await errorHandler(error);
+    }
 };
 
-export const getUsers = async (): Promise<Body[]> => {
-    const users = localStorage.getItem('users');
-    return users ? JSON.parse(users) : [];
-};
-
-export const getUser = async (): Promise<Body | null> => {
-    const user = localStorage.getItem('user');
-    return user ? JSON.parse(user) : null;
-};
-
+// Функция для проверки валидности email
 function isValidEmail(email: string): boolean {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);

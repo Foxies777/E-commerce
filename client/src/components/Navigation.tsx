@@ -1,7 +1,7 @@
 import './Navigation.scss'
 import { Link, useNavigate, useLocation } from 'react-router-dom'
 import logo from '../assets/logo.svg'
-import { $user, logout } from '../shared/auth'
+import { $isAuth, tokenExprired } from '../shared/auth'
 import { useUnit } from 'effector-react'
 import { useEffect } from 'react'
 import { Spin } from 'antd'
@@ -11,7 +11,7 @@ import { ERoutes } from '../utils/const'
 
 const Navigation = () => {
   const [cart, loading] = useUnit([$cart, fetchCartFx.pending]);
-  const user = useUnit($user)
+  const user = useUnit($isAuth)
   const location = useLocation();
 
   useEffect(() => {
@@ -20,11 +20,11 @@ const Navigation = () => {
 
   const navigate = useNavigate();
   const logoutHandler = () => {
-    logout();
+    tokenExprired();
     navigate('/');
   }
   
-  const cartCount = cart.filter(item => item.user_id === user?.id).length 
+  const cartCount = cart.length 
 
   return (
     <>

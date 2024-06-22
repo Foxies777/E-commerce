@@ -1,4 +1,21 @@
 import ky, { HTTPError } from "ky"
+
+export const api = ky.create({
+    prefixUrl: import.meta.env.VITE_API_URL, 
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    hooks: {
+      beforeRequest: [
+        request => {
+          const token = localStorage.getItem('token'); 
+          if (token) {
+            request.headers.set('Authorization', `Bearer ${token}`);
+          }
+        }
+      ]
+    }
+  });
 export class ValidationError extends Error {
     constructor(message: string) {
         super(message);
