@@ -45,7 +45,7 @@ class UserController {
 
     async check(req: Request, res: Response) {
         if (!req.user) {
-            return res.status(401).json({ message: 'Unauthorized' });
+            return res.status(401).json({ message: 'Не авторизован' });
         }
         const { id, email } = req.user;
         const token = generateJWT(id, email);
@@ -53,7 +53,9 @@ class UserController {
     }
     async getUser(req: Request, res: Response) {
         const { id } = req.params;
-        const user = await prisma.user.findUnique({ where: { id: Number(id) } });
+        const user = await prisma.user.findUnique({
+            where: { id: Number(id) }
+        });
         if (!user) {
             return res.status(404).json({ message: 'Пользователь не найден' });
         }
