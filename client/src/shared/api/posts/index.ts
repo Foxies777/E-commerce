@@ -1,10 +1,28 @@
+import { api, errorHandler } from "../api";
 import { Response } from "./model";
 
-export const createProduct = async (products: Response) => {
-        const res = products;
+export const createProduct = async (product: Response) => {
+    console.log(product);
+    try {
+        const res = await api.post("products", {
+            json: product,
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        return res.json();
+    } catch (error) {
+        console.error("Ошибка при создании продукта:", error);
+        return await errorHandler(error);
+    }
+};
+
+export const getProduct = async () => {
+    try {
+        const res = await api.get("products").json<Response[]>();
         return res;
-}
-export const getProduct = async (): Promise<Response[]> => {
-        const products = localStorage.getItem('products');
-        return products ? JSON.parse(products) : [];
+    } catch (error) {
+        console.error("Error during sign-in:", error);
+        return await errorHandler(error);
+    }
 };

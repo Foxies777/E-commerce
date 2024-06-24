@@ -6,7 +6,7 @@ const router = Router();
 const prisma = new PrismaClient();
 
 router
-  .post('/products', ProductController.createProduct)
-  .get('/products', ProductController.getProducts);
+  .post('/', ProductController.createProduct)
+  .get('/', ProductController.getProducts);
 
 export default router;

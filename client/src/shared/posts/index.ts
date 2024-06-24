@@ -1,18 +1,15 @@
-import { createEvent, createStore } from "effector";
-import { persist } from "effector-storage/local";
+import { createEvent, createStore, createEffect } from "effector";
 import { Response } from "../api/posts/model";
+import { createProduct } from "../api/posts";
 
-
-// Событие для добавления продукта
 export const addProduct = createEvent<Response>();
 
-// Store для продуктов
-export const $products = createStore<Response[]>([]).on(addProduct, (state, product) => [...state, product]);
-
-// Persist store в localStorage
-persist({
-  key: 'products',
-  store: $products,
-  serialize: JSON.stringify,
-  deserialize: JSON.parse,
+export const addProductFx = createEffect(async (product: Response) => {
+    const response = await createProduct(product);
+    return response;
 });
+
+export const $products = createStore<Response[]>([]).on(
+    addProductFx.doneData,
+    (state, product) => [...state, product]
+);

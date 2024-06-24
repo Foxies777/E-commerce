@@ -5,7 +5,7 @@ import '../styles/Profile.scss';
 
 const Profile = () => {
   const [user, loading] = useProfile();
-
+  
   return (
     <>
       <Navigation />

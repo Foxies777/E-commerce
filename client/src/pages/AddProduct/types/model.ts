@@ -1,10 +1,8 @@
-import { createEffect, sample } from "effector";
-import { addProduct } from "../../../shared/posts";
-
-export const addProductFx = createEffect(addProduct)
+import { sample } from "effector";
+import { addProductFx } from "../../../shared/posts";
 
 sample({
-    clock: addProductFx,
-    fn: (clk) => clk.id,
-    target: addProduct
-})
+  clock: addProductFx,
+  fn: (product) => product,
+  target: addProductFx
+});
