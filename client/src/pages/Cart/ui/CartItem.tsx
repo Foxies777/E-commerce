@@ -6,7 +6,7 @@ interface CartItemProps {
   title: string;
   description: string;
   price: number;
-  quantity: number;
+  count: number;
   onRemove: () => void;
   onIncrease: () => void;
   onDecrease: () => void;
@@ -18,7 +18,7 @@ const CartItem = ({
   title,
   description,
   price,
-  quantity,
+  count,
   onRemove,
   onIncrease,
   onDecrease,
@@ -35,14 +35,14 @@ const CartItem = ({
             <Card.Text>{description}</Card.Text>
             <div className="d-flex align-items-center">
               <Button variant="outline-secondary" size="sm" onClick={onDecrease}>-</Button>
-              <span className="mx-2">{quantity}</span>
+              <span className="mx-2">{count}</span>
               <Button variant="outline-secondary" size="sm" onClick={onIncrease}>+</Button>
             </div>
           </div>
         </div>
         <div className="d-flex flex-column justify-content-between align-items-end">
           <div>
-            <strong>{price * quantity} руб</strong>
+            <strong>{price * count} руб</strong>
           </div>
           <Button variant="danger" onClick={onRemove}>Удалить</Button>
         </div>

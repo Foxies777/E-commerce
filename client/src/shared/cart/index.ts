@@ -1,7 +1,5 @@
-
 import { createEffect, createEvent, createStore, sample } from 'effector';
-import { persist } from 'effector-storage/local';
-import { addProductToCart, getCart, removeItemFromLocalStorage } from '../api/cart';
+import { getCart, removeItemFromCart, addProductToCart, increaseProductQuantity, decreaseProductQuantity } from '../api/cart';
 
 interface Product {
   id: number;
@@ -9,30 +7,31 @@ interface Product {
   title: string;
   description: string;
   price: number;
-  user_id: string;
+  user_id: number;
+  count: number;
 }
 
-export const addToCart = createEvent<Product>();
-export const removeFromCart = createEvent<{ id: number; index: number }>();
+export const addToCart = createEvent<{ userId: number, productId: number }>();
+export const removeFromCart = createEvent<number>();
+export const increaseQuantity = createEvent<number>();
+export const decreaseQuantity = createEvent<number>();
 
-export const fetchCartFx = createEffect(getCart);
+export const fetchCartFx = createEffect<number, Product[]>(getCart);
 export const addProductFx = createEffect(addProductToCart);
-export const removeProductFx = createEffect(removeItemFromLocalStorage);
+export const removeProductFx = createEffect(removeItemFromCart);
+export const increaseProductQuantityFx = createEffect(increaseProductQuantity);
+export const decreaseProductQuantityFx = createEffect(decreaseProductQuantity);
 
 export const $cart = createStore<Product[]>([])
   .on(fetchCartFx.doneData, (_, cart) => cart)
-  .on(addProductFx.doneData, (_, cart) => cart)
-  .on(removeProductFx.doneData, (_, cart) => cart);
-
-persist({
-  key: 'cart',
-  store: $cart,
-  serialize: (cart) => JSON.stringify(cart),
-  deserialize: (value) => {
-    const parsed = JSON.parse(value);
-    return Array.isArray(parsed) ? parsed : [];
-  },
-});
+  .on(addProductFx.doneData, (state, product) => [...state, product])
+  .on(removeProductFx.done, (state, { params }) => state.filter(item => item.id !== params))
+  .on(increaseProductQuantityFx.doneData, (state, updatedProduct) => 
+    state.map(item => item.id === updatedProduct.id ? updatedProduct : item)
+  )
+  .on(decreaseProductQuantityFx.doneData, (state, updatedProduct) =>
+    state.map(item => item.id === updatedProduct.id ? updatedProduct : item)
+  );
 
 sample({
   source: addToCart,
@@ -40,8 +39,16 @@ sample({
 });
 
 sample({
-  source: $cart,
-  clock: addToCart,
-  fn: (cart, product) => [...cart, product],
-  target: $cart,
+  source: removeFromCart,
+  target: removeProductFx,
+});
+
+sample({
+  source: increaseQuantity,
+  target: increaseProductQuantityFx,
+});
+
+sample({
+  source: decreaseQuantity,
+  target: decreaseProductQuantityFx,
 });

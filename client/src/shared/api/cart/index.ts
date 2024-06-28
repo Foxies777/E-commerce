@@ -1,63 +1,81 @@
-import { EStorageItems, LocalStorageAPI } from "../api";
+import { api, errorHandler } from "../api";
 import { Response } from "./model";
 
-export const getCart = async (): Promise<Response[]> => {
-    const cart = localStorage.getItem('cart');
-    return cart ? JSON.parse(cart) : [];
-};
+export const getCart = async (userId: number): Promise<Response[]> => {
+    console.log(userId);
 
-export const removeItemsFromLocalStorage = async (id: number): Promise<void> => {
-    const cart = localStorage.getItem('cart');
-    if (cart) {
-        const parsedCart = JSON.parse(cart);
-        const updatedCart = parsedCart.filter((item: Response) => item.id !== id);
-        LocalStorageAPI.setItem(EStorageItems.CART, updatedCart);
-        // localStorage.setItem('cart', JSON.stringify(updatedCart));
-
+    try {
+        const res = await api.get(`cart/${userId}`);
+        return await res.json();
+    } catch (error) {
+        console.error("Ошибка при получении корзины:", error);
+        return await errorHandler(error);
     }
 };
-export const removeItemFromLocalStorage = async (id: number, index: number): Promise<void> => {
-    const cart = localStorage.getItem('cart');
-    if (cart) {
-        const parsedCart = JSON.parse(cart);
-        const updatedCart = parsedCart.filter((item: Response, idx: number) => item.id !== id || idx !== index);
-        // localStorage.setItem('cart', JSON.stringify(updatedCart));
-        LocalStorageAPI.setItem(EStorageItems.CART, updatedCart);
 
+export const removeItemFromCart = async (id: number): Promise<void> => {
+    try {
+        await api.delete(`cart/${id}`);
+    } catch (error) {
+        console.error("Ошибка при удалении товара из корзины:", error);
+        await errorHandler(error);
     }
 };
-export const addItemToLocalStorage = async (id: number, index: number): Promise<void> => {
-    const cart = localStorage.getItem('cart');
-    let updatedCart: Response[] = [];
-    let item: Response | undefined;
 
-    if (cart) {
-        const parsedCart = JSON.parse(cart);
-        item = parsedCart.find((cartItem: Response) => cartItem.id === id);
+export const addProductToCart = async (product: {
+    userId: number;
+    productId: number;
+}): Promise<Response> => {
+    console.log(product);
 
-        if (item) {
-            updatedCart = [...parsedCart];
-            updatedCart.splice(index, 0, item);
-        } else {
-            throw new Error(`Item with id ${id} not found`);
-        }
+    try {
+        const res = await api.post("cart", {
+            json: product,
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        return await res.json();
+    } catch (error) {
+        console.error("Ошибка при добавлении товара в корзину:", error);
+        return await errorHandler(error);
     }
-    LocalStorageAPI.setItem(EStorageItems.CART, updatedCart);
-    // localStorage.setItem('cart', JSON.stringify(updatedCart));
 };
 
-export const addProductToCart = async (product: Response) => {
-    const cart = localStorage.getItem('cart');
-    if (cart) {
-        const parsedCart = JSON.parse(cart);
-        const updatedCart = [...parsedCart, product];
-        LocalStorageAPI.setItem(EStorageItems.CART, updatedCart);
-        // localStorage.setItem('cart', JSON.stringify(updatedCart));
-        return updatedCart;
-    } else {
-        const newCart = [product];
-        LocalStorageAPI.setItem(EStorageItems.CART, newCart);
-        // localStorage.setItem('cart', JSON.stringify(newCart));
-        return newCart;
+export const increaseProductQuantity = async (
+    id: number
+): Promise<Response> => {
+    try {
+        const res = await api.patch(`cart/increase/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        return await res.json();
+    } catch (error) {
+        console.error(
+            "Ошибка при увеличении количества товара в корзине:",
+            error
+        );
+        return await errorHandler(error);
+    }
+};
+
+export const decreaseProductQuantity = async (
+    id: number
+): Promise<Response> => {
+    try {
+        const res = await api.patch(`cart/decrease/${id}`, {
+            headers: {
+                "Content-Type": "application/json",
+            },
+        });
+        return await res.json();
+    } catch (error) {
+        console.error(
+            "Ошибка при уменьшении количества товара в корзине:",
+            error
+        );
+        return await errorHandler(error);
     }
 };

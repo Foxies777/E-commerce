@@ -8,6 +8,8 @@ const prisma = new PrismaClient();
 
 class CartController {
     async addToCart(req: Request, res: Response, next: NextFunction) {
+        console.log(req.body);
+        
         try {
             const { userId, productId } = req.body;
             if (!userId || !productId) {
@@ -38,6 +40,8 @@ class CartController {
     }
 
     async getCart(req: Request, res: Response, next: NextFunction) {
+        console.log(req.params);
+        
         try {
             const { userId } = req.params;
             const cart = await prisma.cart.findMany({

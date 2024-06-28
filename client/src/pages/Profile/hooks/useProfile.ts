@@ -1,4 +1,3 @@
-// pages/Profile/hooks/useProfile.ts
 import { useEffect } from 'react';
 import { useUnit } from 'effector-react';
 import { $user, getUserFx } from '../index';

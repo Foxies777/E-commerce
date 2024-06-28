@@ -39,7 +39,6 @@ export const signUp = async (json: Omit<Body, 'id'>): Promise<Response> => {
 
 export const getUser = async (token: string): Promise<User> => {
     try {
-        // Предположим, что токен JWT и содержит ID пользователя
         const decodedToken: { id: string } = jwtDecode(token);
         const userId = decodedToken.id;
 

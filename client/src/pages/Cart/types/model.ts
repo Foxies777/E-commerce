@@ -1,34 +1,46 @@
 import { createEffect, restore, sample } from "effector";
-import { getCart, removeItemsFromLocalStorage, removeItemFromLocalStorage, addItemToLocalStorage } from "../../../shared/api/cart";
+import { getCart, removeItemFromCart, addProductToCart, increaseProductQuantity, decreaseProductQuantity } from "../../../shared/api/cart";
 import { showSuccessMessageFx } from "../../../shared/notification";
+import { Response } from "../../../shared/api/cart/model";
 
+export const getCartFx = createEffect<number, Response[]>(getCart);
+export const removeItemFx = createEffect<number, void>(removeItemFromCart);
+export const addProductFx = createEffect<{ userId: number; productId: number }, Response>(addProductToCart);
+export const increaseProductQuantityFx = createEffect<number, Response>(increaseProductQuantity);
+export const decreaseProductQuantityFx = createEffect<number, Response>(decreaseProductQuantity);
 
-
-export const getCartFx = createEffect(getCart);
 export const $cart = restore(getCartFx, []);
 
-export const removeItemsFx = createEffect(({ id }: { id: number }) => removeItemsFromLocalStorage(id));
-export const removeItemFx = createEffect(({ id, index }: { id: number, index: number }) => removeItemFromLocalStorage(id, index));
-export const addItemToLocalStorageFx = createEffect(({ id, index }: { id: number, index: number }) => addItemToLocalStorage(id, index));
-
-
-
 sample({
-    clock: removeItemFx.doneData,
-    target: getCartFx,
-})
-sample({
-    clock: removeItemsFx.doneData,
-    target: getCartFx,
-})
-
-sample({
-    clock: addItemToLocalStorageFx.doneData,
+    clock: removeItemFx.done,
+    source: $cart,
+    fn: (cart, { params: userId }) => userId,
     target: getCartFx,
 });
 
 sample({
-    clock: removeItemsFx.doneData,
+    clock: addProductFx.done,
+    source: $cart,
+    fn: (cart, { params: { userId } }) => userId,
+    target: getCartFx,
+});
+
+sample({
+    clock: increaseProductQuantityFx.done,
+    source: $cart,
+    fn: (cart, { params: userId }) => userId,
+    target: getCartFx,
+});
+
+sample({
+    clock: decreaseProductQuantityFx.done,
+    source: $cart,
+    fn: (cart, { params: userId }) => userId,
+    target: getCartFx,
+});
+
+sample({
+    clock: removeItemFx.doneData,
     fn: () => 'Продукт удалён',
     target: showSuccessMessageFx,
-})
+});
